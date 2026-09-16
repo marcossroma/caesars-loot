@@ -31,6 +31,8 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - name: Build workspace declarations before typed lint and tests
+        run: npm run build --workspace=@caesars-loot/shared && npm run build --workspace=@caesars-loot/game-math && npm run build --workspace=@caesars-loot/config
       - run: npm run format:check
       - run: npm run lint
       - run: npm run typecheck

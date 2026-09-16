@@ -12,7 +12,13 @@ Milestone 14 preparation: root Vercel configuration, Railway Docker build/pre-de
 healthcheck, exact REST/WebSocket CORS, bounded POST rate limiting, small JSON payloads,
 request IDs, safe headers, production Swagger restriction and deployment/rollback/environment
 documentation are implemented. Public deployment, platform CI and production smoke remain pending.
-No GitHub remote is configured. No production URLs or v1.0.0 release exist yet.
+GitHub remote is configured: https://github.com/marcossroma/caesars-loot.
+First reviewed commit d265d24 was pushed to main. Initial CI failed because workspace
+declarations were absent before typed lint; workflows now build shared packages first.
+The staged-content audit found no current database password, private env files or private keys.
+Vercel and Railway are authenticated; Railway's terms were accepted by the user.
+Railway GitHub App access to this repository still requires the user's authorization.
+No production URLs or v1.0.0 release exist yet.
 Milestone 14 local validation: lint, typecheck, format, build, coverage and 157 unit tests passed.
 Six recovery E2E tests passed again after the final dependency correction; production-mode smoke
 against localhost:3004 with real Supabase passed database health, exact CORS denial, WebSocket

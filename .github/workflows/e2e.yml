@@ -32,6 +32,8 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - name: Build shared workspaces before starting applications
+        run: npm run build --workspace=@caesars-loot/shared && npm run build --workspace=@caesars-loot/game-math && npm run build --workspace=@caesars-loot/config
       - run: npm run db:migrate:deploy
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e:mobile
