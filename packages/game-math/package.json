@@ -1,0 +1,25 @@
+{
+  "name": "@caesars-loot/game-math",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit --pretty false",
+    "test": "vitest run --pool=threads --maxWorkers=1",
+    "test:coverage": "vitest run --coverage --coverage.reporter=text --coverage.reporter=json-summary --coverage.reportsDirectory=../../coverage/game-math --pool=threads --maxWorkers=1",
+    "clean": "node -e \"require('node:fs').rmSync('dist',{recursive:true,force:true})\""
+  },
+  "devDependencies": {
+    "typescript": "latest",
+    "vitest": "latest"
+  }
+}

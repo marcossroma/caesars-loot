@@ -1,0 +1,46 @@
+{
+  "name": "@caesars-loot/server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nest build",
+    "start": "node dist/main.js",
+    "start:dev": "nest start --watch",
+    "typecheck": "tsc --noEmit --pretty false",
+    "test": "vitest run --passWithNoTests --pool=threads --maxWorkers=1",
+    "test:coverage": "vitest run --coverage --coverage.reporter=text --coverage.reporter=json-summary --coverage.reportsDirectory=../../coverage/server --pool=threads --maxWorkers=1",
+    "db:generate": "drizzle-kit generate --config=drizzle.config.mjs",
+    "db:migrate": "drizzle-kit migrate --config=drizzle.config.mjs",
+    "db:migrate:deploy": "drizzle-kit migrate --config=drizzle.config.mjs",
+    "db:studio": "drizzle-kit studio --config=drizzle.config.mjs",
+    "clean": "node -e \"require('node:fs').rmSync('dist',{recursive:true,force:true})\""
+  },
+  "dependencies": {
+    "@caesars-loot/game-math": "*",
+    "@caesars-loot/shared": "*",
+    "@nestjs/common": "latest",
+    "@nestjs/core": "latest",
+    "@nestjs/platform-express": "^12.0.3",
+    "@nestjs/platform-socket.io": "latest",
+    "@nestjs/swagger": "latest",
+    "@nestjs/websockets": "latest",
+    "class-transformer": "latest",
+    "class-validator": "latest",
+    "drizzle-orm": "^0.45.2",
+    "pg": "^8.23.0",
+    "reflect-metadata": "latest",
+    "rxjs": "latest",
+    "socket.io": "latest"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "latest",
+    "@nestjs/testing": "latest",
+    "@types/express": "latest",
+    "@types/node": "latest",
+    "@types/pg": "^8.23.1",
+    "drizzle-kit": "^0.31.10",
+    "typescript": "latest",
+    "vitest": "latest"
+  }
+}

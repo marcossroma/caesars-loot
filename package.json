@@ -1,0 +1,49 @@
+{
+  "name": "caesars-loot",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "npm@11.13.0",
+  "description": "Original instant-game portfolio prototype built with React, PixiJS and NestJS.",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace=@caesars-loot/web",
+    "dev:web": "npm run dev --workspace=@caesars-loot/web",
+    "dev:server": "npm run start:dev --workspace=@caesars-loot/server",
+    "lint": "eslint . --max-warnings=0",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "test:coverage": "npm run test:coverage --workspaces --if-present",
+    "test:e2e:mobile": "npm run test:e2e:mobile --workspace=@caesars-loot/web",
+    "perf:assets": "node scripts/audit-assets.mjs",
+    "perf:benchmark": "node scripts/performance-benchmark.mjs",
+    "perf:memory": "node scripts/memory-soak.mjs",
+    "perf:evidence": "node scripts/capture-performance-evidence.mjs",
+    "perf:flow": "node scripts/performance-flow.mjs",
+    "perf:budget": "node scripts/performance-budget.mjs",
+    "db:generate": "npm run db:generate --workspace=@caesars-loot/server",
+    "db:migrate": "npm run db:migrate --workspace=@caesars-loot/server",
+    "db:migrate:deploy": "npm run db:migrate:deploy --workspace=@caesars-loot/server",
+    "db:studio": "npm run db:studio --workspace=@caesars-loot/server",
+    "build": "npm run build --workspace=@caesars-loot/shared && npm run build --workspace=@caesars-loot/game-math && npm run build --workspace=@caesars-loot/config && npm run build --workspace=@caesars-loot/web && npm run build --workspace=@caesars-loot/server",
+    "clean": "npm run clean --workspaces --if-present"
+  },
+  "engines": {
+    "node": ">=22.0.0",
+    "npm": ">=10.0.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "latest",
+    "@vitest/coverage-v8": "^5.0.0",
+    "eslint": "latest",
+    "eslint-config-prettier": "latest",
+    "globals": "latest",
+    "prettier": "latest",
+    "typescript": "latest",
+    "typescript-eslint": "latest"
+  }
+}
