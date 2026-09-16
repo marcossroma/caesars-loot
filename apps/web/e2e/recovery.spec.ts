@@ -56,6 +56,8 @@ test('offline initialization offers a manual recovery with bounded GET retries',
 });
 
 test('debug recovery handles expired sessions and React render failures', async ({ page }) => {
+  // Two complete recovery cycles can exceed the default budget on software-WebGL CI.
+  test.setTimeout(60_000);
   await ready(page);
   await page.getByText('DEV', { exact: true }).click();
   await page.getByRole('button', { name: 'Simulate session' }).click();

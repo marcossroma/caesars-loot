@@ -20,7 +20,12 @@ Public production source maps are disabled; reproduce locally for debugging.
 
 ## Railway Setup
 
-Import the same repository, root directory `.`, configuration `/railway.json`.
+Import the same repository with root directory `.` and only the backend service.
+For new services, the Railway dashboard reports Config as Code unavailable as of 2026-08-28.
+Do not assume `/railway.json` is applied: configure Dockerfile `/Dockerfile`, pre-deploy
+`npm run db:migrate:deploy`, start `npm run start --workspace=@caesars-loot/server`,
+healthcheck `/health` (120 seconds), On Failure (3 retries) and Wait for CI in the dashboard.
+Include backend, shared packages, lockfile and Dockerfile changes in deployment watch paths.
 The Dockerfile builds the backend and shared workspaces; migration tooling remains in the
 image for the controlled pre-deploy command. The application runs as a non-root user.
 Set NODE_ENV=production, DATABASE_URL, DIRECT_URL, CORS_ORIGIN, DATABASE_POOL_MAX=10,
@@ -79,7 +84,9 @@ this is not evidence of public HTTPS/WSS deployment.
 
 ## Known limitations
 
-Five isolated Postgres fault-injection/integration tests remain deferred by user choice.
+All five isolated Postgres fault-injection/integration tests passed in CI run 35156783870.
+The latest complete E2E run passed 15/16; recovery exceeded the default total time budget.
+Its focused local rerun passed with an explicit 60-second budget; a new hosted CI run is pending.
 Four Moderate audit findings remain in Drizzle tooling's old development-server dependency;
 do not expose Drizzle Studio publicly. High multer findings were corrected via the Nest HTTP
 adapter update. The local bundled Node 24.14.1 reports tooling engine warnings; deployed Node

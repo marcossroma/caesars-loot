@@ -1,7 +1,7 @@
 # Caesar’s Loot
 
-> Milestone 14 in progress — Supabase connection/restart verified; five isolated PostgreSQL tests
-> deferred. Deployment configuration prepared; no public release yet.
+> Milestone 14 in progress — Supabase connection/restart verified and all five isolated PostgreSQL
+> integration tests passed in GitHub CI. Hosted deployment verification is still pending.
 
 ## Live Demo
 
@@ -33,7 +33,7 @@ identity without reproducing an existing game or layout.
 ## Tech stack
 
 - React, TypeScript and Vite for the application shell and HUD
-- PixiJS for the future Canvas/WebGL gameplay scene
+- PixiJS v8 for the persistent responsive Canvas/WebGL gameplay scene
 - NestJS REST API plus Socket.IO Gateway for authoritative commands, events and resynchronization
 - Supabase managed PostgreSQL through Drizzle ORM and versioned migrations
 - Vitest, Playwright and NestJS Testing for critical-path coverage
@@ -42,7 +42,7 @@ identity without reproducing an existing game or layout.
 
 ```text
 apps/web       React shell and persistent responsive PixiJS scene
-apps/server    NestJS API foundation
+apps/server    Authoritative NestJS REST API, Socket.IO and PostgreSQL persistence
 packages/shared     Shared contracts and game-state types
 packages/game-math  Framework-independent demonstrative game math
 packages/config     Shared design tokens and future tooling presets
@@ -137,10 +137,13 @@ requests are abortable and epoch-guarded against stale responses. See
 
 ## Running locally
 
-Requirements: Node.js 22+ and npm 10+.
+Requirements: Node.js 22.22.3+ (see `.nvmrc`) and npm 11.
 
 ```bash
-npm install
+npm ci
+npm run build --workspace=@caesars-loot/shared
+npm run build --workspace=@caesars-loot/game-math
+npm run build --workspace=@caesars-loot/config
 npm run dev:web
 npm run dev:server
 ```
@@ -176,6 +179,13 @@ GitHub Actions runs the deterministic quality gate and browser E2E as separate j
 traces/screenshots are retained as artifacts. See [QA matrix](./docs/qa-matrix.md),
 [edge cases](./docs/edge-cases.md) and [regression checklist](./docs/regression-checklist.md).
 
+[CI run 35156783870](https://github.com/marcossroma/caesars-loot/actions/runs/35156783870)
+passed lint, typecheck, formatting, build and 162 tests: 47 backend, 89 frontend and 26 game-math.
+The backend count includes five integration tests against disposable PostgreSQL, not the live
+Supabase database. Local runs without `TEST_DATABASE_URL` intentionally skip those five tests.
+The complete browser gate must also pass before release; its latest run passed 15/16, and the
+two-cycle recovery scenario now has an explicit 60-second budget (focused rerun passed).
+
 ## Performance
 
 Milestone 12 profiles the production preview rather than assuming where the game is slow. The
@@ -199,8 +209,8 @@ They do not model or certify real-money gaming behavior.
 
 ## Roadmap
 
-See [PROJECT_STATUS.md](./PROJECT_STATUS.md). Live PostgreSQL and restart validation must close
-Milestone 13 before deployment begins.
+See [PROJECT_STATUS.md](./PROJECT_STATUS.md). Persistence and isolated PostgreSQL tests are verified;
+public HTTPS/WSS, hosted restart recovery and release checks remain to be completed in Milestone 14.
 
 ## Deployment plan
 

@@ -4,9 +4,9 @@ Last updated: 2026-09-16
 
 ## Current Phase
 
-Milestone 14 in progress by user authorization, with five Milestone 13 isolated PostgreSQL
-integration tests explicitly deferred. Real Supabase connection, migrations and backend restart
-restoration are verified. Milestone 13 must not be reported as fully validated.
+Milestone 14 in progress by user authorization. The five previously deferred Milestone 13
+isolated PostgreSQL integration tests passed in GitHub CI run 35156783870 on commit 2a3c44d.
+Real Supabase connection, migrations and backend restart restoration are verified.
 
 Milestone 14 preparation: root Vercel configuration, Railway Docker build/pre-deploy migrations,
 healthcheck, exact REST/WebSocket CORS, bounded POST rate limiting, small JSON payloads,
@@ -17,7 +17,17 @@ First reviewed commit d265d24 was pushed to main. Initial CI failed because work
 declarations were absent before typed lint; workflows now build shared packages first.
 The staged-content audit found no current database password, private env files or private keys.
 Vercel and Railway are authenticated; Railway's terms were accepted by the user.
-Railway GitHub App access to this repository still requires the user's authorization.
+Railway GitHub App access to this repository was authorized by the user.
+Railway project e155507d-6a25-4280-a962-c16f5292b770 now has a staged backend service;
+the automatically proposed frontend service was discarded before deployment.
+Dockerfile /Dockerfile, Wait for CI and /health are staged. Credentials, migrations,
+remaining service configuration and public networking are still pending; nothing is live.
+The Railway dashboard reports Config as Code unavailable for newly configured services;
+railway.json must not be relied on for this deployment. Equivalent dashboard settings are required.
+CI quality passed 162 tests (server 47, web 89, math 26), lint, typecheck, format and build.
+E2E run 35156783927 passed 15/16; the two-cycle recovery scenario exceeded its 30-second
+total budget. Its explicit budget is now 60 seconds; the focused local rerun passed in 39.9 seconds.
+A new complete CI/E2E run is still required before production deployment.
 No production URLs or v1.0.0 release exist yet.
 Milestone 14 local validation: lint, typecheck, format, build, coverage and 157 unit tests passed.
 Six recovery E2E tests passed again after the final dependency correction; production-mode smoke
