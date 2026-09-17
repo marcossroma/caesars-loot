@@ -1,6 +1,8 @@
 # Deployment
 
-Status: configuration prepared; no public deployment verified yet.
+Status: Vercel static frontend deployed; Railway is gated by GitHub CI. Public end-to-end
+verification is pending. Frontend: https://caesars-loot-server.vercel.app/.
+Assigned backend domain: https://caesars-lootserver-production.up.railway.app/ (not healthy yet).
 
 ## Architecture
 
@@ -29,7 +31,8 @@ Include backend, shared packages, lockfile and Dockerfile changes in deployment 
 The Dockerfile builds the backend and shared workspaces; migration tooling remains in the
 image for the controlled pre-deploy command. The application runs as a non-root user.
 Set NODE_ENV=production, DATABASE_URL, DIRECT_URL, CORS_ORIGIN, DATABASE_POOL_MAX=10,
-DATABASE_SSL_CA_FILE=supabase-ca.crt. PORT is supplied by Railway. Generate an HTTPS domain.
+DATABASE_SSL_CA_FILE=supabase-ca.crt. Set PORT=3000 to match this service's public target port.
+Generate an HTTPS domain. Leave the custom build command empty when using the Dockerfile.
 Use one replica: event delivery and rate-limit windows are process-local; scaling requires
 a shared Socket.IO adapter and rate-limit store, not included in this portfolio.
 Trust exactly one ingress proxy; do not expose this server directly with untrusted forwarded headers.
@@ -85,13 +88,18 @@ this is not evidence of public HTTPS/WSS deployment.
 ## Known limitations
 
 All five isolated Postgres fault-injection/integration tests passed in CI run 35156783870.
-The latest complete E2E run passed 15/16; recovery exceeded the default total time budget.
-Its focused local rerun passed with an explicit 60-second budget; a new hosted CI run is pending.
+E2E run 35161395756 passed 13/16 with software-WebGL timeouts and a closed browser session.
+Trace screenshots are now disabled, while DOM/action traces and all assertions are retained.
+Long scenarios have explicit total budgets; all three failing cases passed locally (4.5 minutes).
+Complete local suite passed 16/16. Quality CI 35168271884 passed; hosted E2E 35168271741 again
+hit a closed Chromium session in settings persistence. CI now releases the rendering browser
+before running recovery in a fresh process, retaining every test and both artifact folders.
+Railway Wait for CI remains enabled; a green complete hosted gate is required.
 Four Moderate audit findings remain in Drizzle tooling's old development-server dependency;
 do not expose Drizzle Studio publicly. High multer findings were corrected via the Nest HTTP
 adapter update. The local bundled Node 24.14.1 reports tooling engine warnings; deployed Node
-must satisfy the CLI's Node 22.22.3 minimum. `.nvmrc` records that version. Docker verification
-and platform connection are pending. No CSP is enabled yet: validate PixiJS worker/blob,
+must satisfy the CLI's Node 22.22.3 minimum. `.nvmrc` records that version. Hosted Docker verification
+is pending; both platform GitHub integrations are connected. No CSP is enabled yet: validate PixiJS worker/blob,
 fonts/assets and actual API/WSS domains before adding a restrictive policy.
 
 ## Rollback

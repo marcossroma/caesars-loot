@@ -1,7 +1,7 @@
 # Release checklist
 
 - [ ] Lint, typecheck, unit tests, coverage and build pass on release commit
-- [ ] Isolated PostgreSQL integration tests pass (five pending locally)
+- [x] Isolated PostgreSQL integration tests pass (all five verified in GitHub CI)
 - [ ] Critical E2E passes
 - [ ] No credentials in tracked files, image or frontend artifact
 - [ ] Intended GitHub remote and CI checks are green; branch protection configured

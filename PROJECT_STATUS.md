@@ -11,7 +11,8 @@ Real Supabase connection, migrations and backend restart restoration are verifie
 Milestone 14 preparation: root Vercel configuration, Railway Docker build/pre-deploy migrations,
 healthcheck, exact REST/WebSocket CORS, bounded POST rate limiting, small JSON payloads,
 request IDs, safe headers, production Swagger restriction and deployment/rollback/environment
-documentation are implemented. Public deployment, platform CI and production smoke remain pending.
+documentation are implemented. Vercel static deployment and platform quality CI passed;
+Railway rollout and public end-to-end smoke remain pending.
 GitHub remote is configured: https://github.com/marcossroma/caesars-loot.
 First reviewed commit d265d24 was pushed to main. Initial CI failed because workspace
 declarations were absent before typed lint; workflows now build shared packages first.
@@ -32,7 +33,10 @@ The existing Vercel project caesars-loot-server was corrected from NestJS/apps/s
 Vite/repository root, with npm ci, shared-workspace + web build, apps/web/dist and Node 22.x.
 Dashboard success notifications confirmed these settings were saved. Production VITE_API_URL
 and VITE_WS_URL now reference the assigned Railway HTTPS origin and /game namespace;
-Vercel confirmed both variables were added. A corrected frontend redeploy was requested.
+Vercel confirmed both variables were added. Frontend deployment F9tHoXcjxZN57P7ckxybsCNpgUru
+reached Ready; https://caesars-loot-server.vercel.app/ renders the game and the expected recovery
+screen while the backend is offline. The redundant Railway custom build command was removed,
+leaving all workspace compilation to the Dockerfile.
 The Railway dashboard reports Config as Code unavailable for newly configured services;
 railway.json must not be relied on for this deployment. Equivalent dashboard settings are required.
 CI quality passed 162 tests (server 47, web 89, math 26), lint, typecheck, format and build.
@@ -46,8 +50,14 @@ Trace screenshot capture is now disabled while DOM/action traces are retained, r
 continuous WebGL readback overhead. The CI twenty-round total budget is 480 seconds and timeout
 recovery is 60 seconds; individual transition deadlines and assertions remain unchanged.
 Focused local rerun of all three failing scenarios passed (3/3, 4.5 minutes).
-Lint, typecheck and formatting passed. Complete hosted CI/E2E rerun remains required.
-No production URLs or v1.0.0 release exist yet.
+Complete local browser suite passed 16/16 (6.9 minutes); lint, typecheck, formatting,
+157 local unit tests, coverage and build passed. Five database tests remain CI-only locally.
+Quality CI run 35168271884 passed. Hosted E2E run 35168271741 again encountered a closed
+Chromium session in settings persistence after the long mobile rendering suite.
+The workflow now runs mobile and recovery files in separate Chromium invocations, preserving
+all tests and distinct failure artifact folders. This isolates renderer resources; a green
+hosted rerun is still required. Wait for CI remains enabled on Railway.
+Public domains are assigned; no v1.0.0 release exists yet.
 Milestone 14 local validation: lint, typecheck, format, build, coverage and 157 unit tests passed.
 Six recovery E2E tests passed again after the final dependency correction; production-mode smoke
 against localhost:3004 with real Supabase passed database health, exact CORS denial, WebSocket
@@ -315,28 +325,28 @@ The smoke-test demo session/history was retained; no user data was deleted.
 
 ## In Progress
 
-- Verify migration, repository integration, database-offline behavior, concurrent operations and
-  session/active-round/history survival on an isolated real PostgreSQL database.
-- Perform the required browser refresh/restart checks against that database before closing M13.
+- Complete the hosted mobile CI gate and Railway Docker rollout.
+- Verify public database health, REST/WSS, refresh/reconnect and hosted restart persistence.
+- Finalize verified deployment documentation; do not claim a release before its checklist passes.
 
 ## Next
 
-Milestone 14 — Vercel/Railway/Supabase deployment and production hardening, only after Milestone 13
-is fully verified. Do not begin automatically.
+Finish Milestone 14 deployment verification. Do not start Milestone 15 automatically.
 
 ## Known Issues
 
 - No Critical or High severity defect is known at the Milestone 12 close.
 - Without `DATABASE_URL`, non-production runs intentionally use in-memory repositories and reset on
-  backend restart. Production requires a PostgreSQL URL. This environment has no PostgreSQL service,
-  Supabase credentials, `TEST_DATABASE_URL`, Docker or `psql`, so real persistence and restart remain
-  unverified rather than claimed complete.
+  backend restart. Production requires a PostgreSQL URL. Real Supabase persistence/restart and
+  five isolated PostgreSQL tests are verified. Local TEST_DATABASE_URL remains unset; isolated
+  integration tests run against disposable PostgreSQL in GitHub CI, not production.
 - One grouped E2E run hit a transient Chromium session-closed timeout during first touch readiness;
   the same touch scenario passed isolated. This is tracked as test-environment flakiness, not a
   confirmed gameplay regression.
 - Multiple tabs may observe one shared session room, but coordinated multiplayer gameplay is outside
   this milestone; authoritative conflict validation still applies.
-- Authentication, persistent storage and distributed Socket.IO adapters are intentionally deferred.
+- Authentication and distributed Socket.IO adapters are intentionally deferred. PostgreSQL
+  persistent storage is implemented and verified.
 - Production character sprite sheets, textured particles, recorded audio and keyboard board
   navigation remain future work; procedural character and sound are intentional fallbacks.
 - The generated and optimized background remains an initial original scene; isolated production
@@ -393,4 +403,6 @@ is fully verified. Do not begin automatically.
 
 ## Deployment Status
 
-Not deployed. Vercel, Railway and Supabase setup is planned for Milestone 14.
+Vercel frontend Ready at https://caesars-loot-server.vercel.app/; Railway backend domain assigned
+at https://caesars-lootserver-production.up.railway.app/ but waiting for green mobile CI.
+Dedicated Supabase is configured with verified TLS. Public game operation and release are pending.

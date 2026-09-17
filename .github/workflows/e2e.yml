@@ -36,7 +36,13 @@ jobs:
         run: npm run build --workspace=@caesars-loot/shared && npm run build --workspace=@caesars-loot/game-math && npm run build --workspace=@caesars-loot/config
       - run: npm run db:migrate:deploy
       - run: npx playwright install --with-deps chromium
-      - run: npm run test:e2e:mobile
+      # Separate invocations release Chromium/GPU resources after the long rendering suite.
+      # Each file still runs every test once; distinct output folders retain both failure sets.
+      - name: Mobile rendering and lifecycle suite
+        run: npm run test:e2e:mobile --workspace=@caesars-loot/web -- mobile.spec.ts --output=test-results/mobile
+      - name: Recovery and settings suite in a fresh Chromium process
+        if: success() || failure()
+        run: npm run test:e2e:mobile --workspace=@caesars-loot/web -- recovery.spec.ts --output=test-results/recovery
       - if: failure()
         uses: actions/upload-artifact@v4
         with:

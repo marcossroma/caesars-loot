@@ -5,7 +5,9 @@
 
 ## Live Demo
 
-Public URL pending Vercel/Railway deployment. No production tests or release are claimed.
+[Frontend on Vercel](https://caesars-loot-server.vercel.app/).
+The static frontend is deployed; the demo is not yet playable while Railway awaits green CI.
+Public end-to-end verification and release remain pending.
 
 ## Production Architecture
 
@@ -183,8 +185,11 @@ traces/screenshots are retained as artifacts. See [QA matrix](./docs/qa-matrix.m
 passed lint, typecheck, formatting, build and 162 tests: 47 backend, 89 frontend and 26 game-math.
 The backend count includes five integration tests against disposable PostgreSQL, not the live
 Supabase database. Local runs without `TEST_DATABASE_URL` intentionally skip those five tests.
-The complete browser gate must also pass before release; its latest run passed 15/16, and the
-two-cycle recovery scenario now has an explicit 60-second budget (focused rerun passed).
+The complete browser gate must also pass before release. The three failing cases from hosted
+run 35161395756 passed locally after reducing trace screenshot overhead and setting bounded
+total budgets. The complete local suite passed 16/16. Hosted settings persistence still hit a
+closed Chromium session after the long rendering suite; CI now runs rendering and recovery
+in separate browser processes without removing tests. A green hosted gate is still required.
 
 ## Performance
 
