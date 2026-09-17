@@ -2,7 +2,33 @@
 
 Last updated: 2026-09-17
 
-## Current Phase
+## Current Release Snapshot
+
+Functional portfolio demo published on Vercel + Railway + dedicated Supabase with verified TLS.
+Frontend: https://caesars-loot-server.vercel.app/.
+Backend health: https://caesars-lootserver-production.up.railway.app/health.
+Quality CI 35235472519 and complete browser CI 35235472555 passed on ad1db5c.
+Hosted smoke passed: database health, exact positive/negative CORS, safe validation errors,
+headers, disabled production Swagger, private traps, double start/cashout, history and WSS.
+Responsive browser smoke passed at 360x800, 390x844, 430x932, 844x390, 1366x768 and 1920x1080:
+touch round, last-result restoration after reload, retained credits and one canvas, without
+application page errors or production debug controls. Clean hosted screenshots are under
+docs/screenshots/release. An active safe round survived Railway deployment replacement
+c663fb60 → f94264ac; credits, revealed state, WSS room rejoin and later settlement passed.
+Local lint/typecheck/format/build/coverage and 157 unit tests passed; five database tests are
+verified in isolated CI. Current npm audit reports zero vulnerabilities; known database values
+are absent from all Git objects and the frontend artifact. This is not an audit of unknown secrets.
+
+Final polish adds a visible NO REAL MONEY notice, revalidation for unversioned nested assets,
+professional README, technical/application summaries, career drafts, code tour, two-/five-minute
+demo scripts and a manual gameplay recording plan. No application/profile/video was submitted.
+Formal v1.0.0 release is not declared: physical iOS/Android, full browser/hardware performance
+matrix and owner-managed branch protection remain manual checklist requirements. Hosting uses
+the existing Railway trial; long-term service availability requires owner plan/budget review.
+
+## Implementation and Deployment History
+
+The entries below record earlier stages and failures, not the current live service state.
 
 Milestone 14 in progress by user authorization. The five previously deferred Milestone 13
 isolated PostgreSQL integration tests passed in GitHub CI run 35156783870 on commit 2a3c44d.
@@ -330,13 +356,13 @@ The smoke-test demo session/history was retained; no user data was deleted.
 
 ## In Progress
 
-- Complete the hosted mobile CI gate and Railway Docker rollout.
-- Verify public database health, REST/WSS, refresh/reconnect and hosted restart persistence.
-- Finalize verified deployment documentation; do not claim a release before its checklist passes.
+- Publish final presentation polish and confirm its CI/platform rollout.
+- Owner-only device/browser, branch protection, video and application checklist actions.
 
 ## Next
 
-Finish Milestone 14 deployment verification. Do not start Milestone 15 automatically.
+Complete the remaining manual release checklist before tagging v1.0.0. Feature scope is frozen;
+portfolio materials are prepared by the user's request to finalize the project.
 
 ## Known Issues
 
@@ -408,6 +434,6 @@ Finish Milestone 14 deployment verification. Do not start Milestone 15 automatic
 
 ## Deployment Status
 
-Vercel frontend Ready at https://caesars-loot-server.vercel.app/; Railway backend domain assigned
-at https://caesars-lootserver-production.up.railway.app/ but waiting for green mobile CI.
-Dedicated Supabase is configured with verified TLS. Public game operation and release are pending.
+Vercel frontend and Railway backend are live. Dedicated Supabase, public REST/WSS, responsive
+touch/reload and hosted redeploy persistence are verified. The functional demo is usable;
+formal release/tag awaits the explicitly documented manual checklist, not an offline backend.

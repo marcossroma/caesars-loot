@@ -1,8 +1,15 @@
 # Deployment
 
-Status: Vercel static frontend deployed; Railway is gated by GitHub CI. Public end-to-end
-verification is pending. Frontend: https://caesars-loot-server.vercel.app/.
-Assigned backend domain: https://caesars-lootserver-production.up.railway.app/ (not healthy yet).
+Status: functional demo live; public REST/WSS and responsive touch/reload smoke passed.
+Frontend: https://caesars-loot-server.vercel.app/.
+Backend: https://caesars-lootserver-production.up.railway.app/health (database connected).
+Verified 2026-09-17: Docker build, pre-deploy migrations, active deployment, safe validation/
+headers, disabled production Swagger, exact CORS denial, private traps, double start/cashout
+and history. Six viewport Chromium smoke retained one canvas and no page errors.
+An active revealed round and credits survived Railway replacement c663fb60 → f94264ac,
+followed by WSS room rejoin and cashout. Fictional smoke sessions are retained; no data deleted.
+Quality CI 35235472519 and complete browser CI 35235472555 passed on ad1db5c.
+Owner-managed branch protection and physical/browser/hardware review remain release gates.
 
 ## Architecture
 
@@ -76,7 +83,7 @@ Public state must omit hidden traps. Test Socket.IO connect/join/disconnect/reco
 Validate unauthorized Origin returns 403, malformed inputs return safe 4xx, and controlled
 POST spam returns 429. Do not load-test production or run rollback fault injection there.
 Test 390×844, 430×932, 844×390 and Chromium/Firefox/WebKit. Record actual performance,
-not estimates. Production smoke and physical-device checks are pending.
+not estimates. Production Chromium smoke passed; physical/full browser checks remain manual.
 
 For a controlled smoke run set SMOKE_API_URL and SMOKE_FRONTEND_ORIGIN, then run
 `node scripts/deployment-smoke.mjs`. It creates a retained fictional-credit session, verifies
@@ -87,20 +94,19 @@ this is not evidence of public HTTPS/WSS deployment.
 
 ## Known limitations
 
-All five isolated Postgres fault-injection/integration tests passed in CI run 35156783870.
-E2E run 35161395756 passed 13/16 with software-WebGL timeouts and a closed browser session.
-Trace screenshots are now disabled, while DOM/action traces and all assertions are retained.
-Long scenarios have explicit total budgets; all three failing cases passed locally (4.5 minutes).
-Complete local suite passed 16/16. Quality CI 35168271884 passed; hosted E2E 35168271741 again
-hit a closed Chromium session in settings persistence. CI now releases the rendering browser
-before running recovery in a fresh process, retaining every test and both artifact folders.
-Railway Wait for CI remains enabled; a green complete hosted gate is required.
-Four Moderate audit findings remain in Drizzle tooling's old development-server dependency;
-do not expose Drizzle Studio publicly. High multer findings were corrected via the Nest HTTP
-adapter update. The local bundled Node 24.14.1 reports tooling engine warnings; deployed Node
-must satisfy the CLI's Node 22.22.3 minimum. `.nvmrc` records that version. Hosted Docker verification
-is pending; both platform GitHub integrations are connected. No CSP is enabled yet: validate PixiJS worker/blob,
+All five isolated Postgres tests and complete E2E passed in GitHub CI. Settings traces showed
+an exhausted total deadline, not lost preferences; initialization/budgets were corrected without
+removing assertions. Current npm audit reports zero vulnerabilities; still do not expose Studio.
+Wait for CI remains enabled. Deployed Node must satisfy the CLI's Node 22.22.3 minimum;
+`.nvmrc` records that version. Hosted Docker build is verified. No CSP is enabled yet: validate PixiJS worker/blob,
 fonts/assets and actual API/WSS domains before adding a restrictive policy.
+US West backend to São Paulo database latency and the time-limited Railway trial are known
+tradeoffs. Do not assume permanent free backend availability or verified free-plan backups.
+
+Frontend smoke: set SMOKE_WEB_URL and run `node scripts/hosted-browser-smoke.mjs`.
+Redeploy smoke: set SMOKE_API_URL/SMOKE_FRONTEND_ORIGIN and run
+`node scripts/hosted-restart-smoke.mjs`; verify a new Railway deployment is Active, then
+press Enter. This script does not initiate redeploy or reset/delete the database.
 
 ## Rollback
 

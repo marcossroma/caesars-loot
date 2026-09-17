@@ -1,13 +1,36 @@
 # Caesar’s Loot
 
-> Milestone 14 in progress — Supabase connection/restart verified and all five isolated PostgreSQL
-> integration tests passed in GitHub CI. Hosted deployment verification is still pending.
+An original instant-game prototype built with React, TypeScript, PixiJS, NestJS and WebSockets.
+
+[Source](https://github.com/marcossroma/caesars-loot) ·
+[Technical summary](docs/application/technical-summary.md) ·
+[Gameplay recording plan](docs/portfolio/gameplay-video.md)
+
+> Published portfolio prototype. Fictional demo credits only — no real money.
+> Automated deployment smoke and isolated PostgreSQL tests pass. Formal release checks are tracked separately.
 
 ## Live Demo
 
 [Frontend on Vercel](https://caesars-loot-server.vercel.app/).
-The static frontend is deployed; the demo is not yet playable while Railway awaits green CI.
-Public end-to-end verification and release remain pending.
+Playable demo backed by Railway and dedicated Supabase PostgreSQL.
+[Backend health](https://caesars-lootserver-production.up.railway.app/health).
+
+![Production desktop gameplay scene](docs/screenshots/release/1366x768-ready.png)
+
+Gameplay video is not published yet: [recording checklist](docs/portfolio/gameplay-video.md).
+
+## Gameplay
+
+Choose a trap count and fictional-credit bet, start the heist, reveal treasure tiles and
+escape before finding a trap. No deposits, withdrawals or real-money features.
+
+## Highlights
+
+- One persistent responsive PixiJS renderer, reusable tiles and a bounded effects pool.
+- Event-driven character reactions and gesture-unlocked procedural audio.
+- Server-authoritative REST commands, realtime events and reconnect/resynchronization.
+- PostgreSQL transactions and concurrency protections for anonymous demo rounds.
+- Unit, integration and touch/recovery browser tests with measured performance evidence.
 
 ## Production Architecture
 
@@ -185,11 +208,11 @@ traces/screenshots are retained as artifacts. See [QA matrix](./docs/qa-matrix.m
 passed lint, typecheck, formatting, build and 162 tests: 47 backend, 89 frontend and 26 game-math.
 The backend count includes five integration tests against disposable PostgreSQL, not the live
 Supabase database. Local runs without `TEST_DATABASE_URL` intentionally skip those five tests.
-The complete browser gate must also pass before release. The three failing cases from hosted
-run 35161395756 passed locally after reducing trace screenshot overhead and setting bounded
-total budgets. The complete local suite passed 16/16. Hosted settings persistence still hit a
-closed Chromium session after the long rendering suite; CI now runs rendering and recovery
-in separate browser processes without removing tests. A green hosted gate is still required.
+[Quality CI](https://github.com/marcossroma/caesars-loot/actions/runs/35235472519) and
+[complete browser CI](https://github.com/marcossroma/caesars-loot/actions/runs/35235472555)
+passed on commit `ad1db5c`. The settings failure trace showed correct persisted values but an
+exhausted total test deadline; redundant initialization was removed and CI budgets adjusted.
+Rendering and recovery run in separate processes, with every assertion retained.
 
 ## Performance
 
@@ -214,8 +237,10 @@ They do not model or certify real-money gaming behavior.
 
 ## Roadmap
 
-See [PROJECT_STATUS.md](./PROJECT_STATUS.md). Persistence and isolated PostgreSQL tests are verified;
-public HTTPS/WSS, hosted restart recovery and release checks remain to be completed in Milestone 14.
+See [PROJECT_STATUS.md](./PROJECT_STATUS.md). Public HTTPS/WSS, touch/reload, private traps,
+concurrent settlement and active-round persistence across a Railway redeploy are verified.
+Physical-device/browser review, branch protection and recorded video remain manual; no v1.0.0
+release or submitted application is claimed.
 
 ## Deployment plan
 
@@ -224,4 +249,26 @@ public HTTPS/WSS, hosted restart recovery and release checks remain to be comple
 - Database: Supabase PostgreSQL
 - Source: GitHub
 
-Secrets will be supplied through environment variables and must never be committed.
+Secrets are supplied through private backend environment variables and must never be committed.
+
+## What I Learned
+
+- Persist rendering resources independently of React snapshots.
+- Separate authoritative transitions from cancellable visual feedback.
+- Resynchronize uncertain commands without replaying mutations.
+- Reset event sequence epochs correctly after a server restart.
+- Test race conditions against isolated PostgreSQL, never production.
+- Optimize measured blocking assets and subscriptions before rewriting rendering loops.
+
+## Portfolio and Interview
+
+See the [project package](docs/application/project-summary.md),
+[code tour](docs/interview/code-tour.md), [two-/five-minute demo scripts](docs/interview/demo-scripts.md)
+and [curriculum/LinkedIn drafts](docs/application/career-drafts.md).
+Video publication, profile updates and job applications remain manual actions.
+
+## Future Improvements
+
+Production character sprite art, keyboard canvas navigation, localization and stronger
+observability. Distributed scaling requires shared Socket.IO and rate-limit adapters.
+No login, payments or real-money system is implied by this prototype.

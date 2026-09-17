@@ -182,6 +182,14 @@ select {
   letter-spacing: 2px;
 }
 
+.hud-state::after {
+  content: 'NO REAL MONEY';
+  color: #dcc8a5;
+  font-size: 7px;
+  letter-spacing: 0.06em;
+  margin-left: 8px;
+}
+
 .state-dot {
   width: 7px;
   height: 7px;

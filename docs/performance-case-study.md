@@ -2,10 +2,26 @@
 
 ## Milestone 14 hosted baseline
 
-Not measured yet: Vercel/Railway deployment is pending. Existing measurements below
-remain local observations, not production claims. Asset re-audit on 2026-09-16 confirms
-the treasury WebP is 240,998 bytes at 1600×900. Public load/interactive time, mobile FPS,
-REST latency and WSS reconnect timings must be recorded after deployment.
+Measured 2026-09-17 at 14:59 UTC using the public Vercel frontend and public Railway API.
+One headless Chromium/software-WebGL sample per viewport, DPR 1, during deployment validation:
+
+| Viewport  | Navigation | Start enabled | Asset load measure |
+| --------- | ---------: | ------------: | -----------------: |
+| 1366×768  |     430 ms |     11,670 ms |             821 ms |
+| 1920×1080 |     297 ms |     10,137 ms |           1,417 ms |
+| 390×844   |     422 ms |      6,396 ms |             468 ms |
+| 844×390   |     317 ms |      6,008 ms |             454 ms |
+
+Public API single-request samples: config 500 ms, session 465 ms, history 619 ms, resync
+807 ms, start 1,653 ms, reveal 1,396 ms and cashout 1,793 ms. These are observations, not
+percentiles or hardware-user guarantees. The backend is in US West; Supabase is in São Paulo,
+so cross-region transactional round trips remain a known latency tradeoff. The first mixed
+benchmark used a local API and is deliberately excluded from these public API measurements.
+
+Software-WebGL reported GPU readback stalls and distorted frame cadence; no hardware FPS
+claim is made. Physical mobile/thermal and hardware Chrome profiling remain manual. The
+treasury WebP is still 240,998 bytes at 1600×900; the entry stays below its 600,000-byte budget.
+Reproduce with CAESARS_LOOT_PERF_URL and CAESARS_LOOT_API_URL both set to public HTTPS URLs.
 
 ## Context
 

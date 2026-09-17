@@ -15,7 +15,18 @@ async function request(path, body) {
   return { response, data };
 }
 const health = await request('/health');
+assert(health.response.ok, 'Health request failed');
 assert.equal(health.data.database, 'connected');
+assert.equal(health.response.headers.get('access-control-allow-origin'), origin);
+assert.equal(health.response.headers.get('x-content-type-options'), 'nosniff');
+assert.equal(health.response.headers.get('x-frame-options'), 'DENY');
+assert.equal(health.response.headers.get('x-powered-by'), null);
+assert(health.response.headers.get('x-request-id'), 'Missing request correlation ID');
+const invalid = await request('/api/game/start', {});
+assert.equal(invalid.response.status, 400);
+assert.equal(invalid.data.code, 'VALIDATION_ERROR');
+assert(!JSON.stringify(invalid.data).includes('stack'), 'Error stack exposed');
+assert.equal((await request('/api/docs')).response.status, 404);
 const denied = await fetch(`${base}/health`, {
   headers: { Origin: 'https://unauthorized.invalid' },
   signal: AbortSignal.timeout(15_000),

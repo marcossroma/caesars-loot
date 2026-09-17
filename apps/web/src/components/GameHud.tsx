@@ -78,7 +78,11 @@ export function GameHud({ controller }: { controller: GameController }) {
   const canCashOut = game.gameState === 'PLAYING' && game.safeReveals > 0;
 
   return (
-    <aside className="game-hud" aria-label="Heist controls">
+    <aside
+      className="game-hud"
+      aria-label="Heist controls"
+      aria-description="Fictional demo credits. No real money."
+    >
       {game.socketState !== 'connected' && (
         <div className="socket-warning" role="status">
           {game.socketState === 'reconnecting' ? 'Reconnecting realtime…' : 'Realtime unavailable'}

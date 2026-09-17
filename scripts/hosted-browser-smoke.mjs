@@ -1,7 +1,9 @@
 import assert from 'node:assert/strict';
+import { mkdirSync } from 'node:fs';
 import { chromium, expect } from '@playwright/test';
 
 const frontend = process.env.SMOKE_WEB_URL;
+const capture = process.env.SMOKE_CAPTURE === '1';
 assert(
   frontend && new URL(frontend).protocol === 'https:',
   'Set SMOKE_WEB_URL to the hosted HTTPS frontend',
@@ -23,11 +25,14 @@ try {
     timeout: 30_000,
   });
   await expect(page.locator('.debug-overlay')).toHaveCount(0);
+  if (capture) mkdirSync('docs/screenshots/release', { recursive: true });
   for (const viewport of [
+    { width: 360, height: 800 },
     { width: 390, height: 844 },
     { width: 430, height: 932 },
     { width: 844, height: 390 },
     { width: 1366, height: 768 },
+    { width: 1920, height: 1080 },
   ]) {
     await page.setViewportSize(viewport);
     await expect(page.locator('canvas.pixi-canvas')).toHaveCount(1);
@@ -36,6 +41,10 @@ try {
       .poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth))
       .toBe(true);
     console.log(`Hosted layout verified: ${viewport.width}x${viewport.height}`);
+    if (capture)
+      await page.screenshot({
+        path: `docs/screenshots/release/${viewport.width}x${viewport.height}-ready.png`,
+      });
   }
   await page.setViewportSize({ width: 390, height: 844 });
   await page.getByRole('button', { name: 'START HEIST', exact: true }).tap();
@@ -47,6 +56,7 @@ try {
       timeout: 15_000,
     })
     .toBe(true);
+  if (capture) await page.screenshot({ path: 'docs/screenshots/release/390x844-revealed.png' });
   if (await escape.isEnabled()) await escape.tap();
   await expect(page.getByRole('dialog')).toBeVisible({ timeout: 15_000 });
   await page.getByRole('button', { name: /^(CONTINUE|TRY AGAIN)$/ }).tap();
@@ -57,6 +67,9 @@ try {
     .locator('strong')
     .textContent();
   await page.reload();
+  // Initial authoritative resync intentionally restores the last settled result after reload.
+  await expect(page.getByRole('dialog')).toBeVisible({ timeout: 30_000 });
+  await page.getByRole('button', { name: /^(CONTINUE|TRY AGAIN)$/ }).tap();
   await expect(page.getByRole('button', { name: 'START HEIST', exact: true })).toBeEnabled({
     timeout: 30_000,
   });
