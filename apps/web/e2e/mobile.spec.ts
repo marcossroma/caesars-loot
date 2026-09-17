@@ -123,7 +123,9 @@ test('React teardown releases and restores PixiJS without duplication', async ({
 });
 
 test('20 mobile rounds keep PixiJS, character and pooled effects stable', async ({ page }) => {
-  test.setTimeout(240_000);
+  // CI software WebGL needs a larger total budget for twenty real server rounds.
+  // Individual state-transition deadlines and all twenty rounds remain unchanged.
+  test.setTimeout(process.env['CI'] ? 480_000 : 240_000);
   await page.setViewportSize({ width: 390, height: 844 });
   await waitUntilReady(page);
   await page.locator('.hud-settings summary').click();

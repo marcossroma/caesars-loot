@@ -9,7 +9,9 @@ export default defineConfig({
   use: {
     baseURL: process.env.E2E_WEB_URL ?? 'http://localhost:5173',
     hasTouch: true,
-    trace: 'retain-on-failure',
+    // Keep DOM/action diagnostics without capturing the WebGL canvas on every action.
+    // Continuous trace screenshots contend with software rendering on CI runners.
+    trace: { mode: 'retain-on-failure', screenshots: false },
   },
   webServer: [
     {

@@ -20,14 +20,33 @@ Vercel and Railway are authenticated; Railway's terms were accepted by the user.
 Railway GitHub App access to this repository was authorized by the user.
 Railway project e155507d-6a25-4280-a962-c16f5292b770 now has a staged backend service;
 the automatically proposed frontend service was discarded before deployment.
-Dockerfile /Dockerfile, Wait for CI and /health are staged. Credentials, migrations,
-remaining service configuration and public networking are still pending; nothing is live.
+Dockerfile /Dockerfile, Wait for CI, /health (120 seconds), pre-deploy migrations,
+start command and On Failure restart (3 retries) are staged. Six masked variables are staged:
+NODE_ENV, DATABASE_POOL_MAX, DATABASE_SSL_CA_FILE, DATABASE_URL, DIRECT_URL and exact CORS_ORIGIN.
+Database credentials were stored in Railway with explicit user authorization; no credentials
+were sent to Vercel or GitHub. Dashboard changes were applied; deployment was skipped because
+the GitHub E2E check failed. Wait for CI remains enabled (not bypassed).
+Public domain caesars-lootserver-production.up.railway.app was generated with user authorization,
+target port 3000. PORT=3000 is configured. No healthy backend deployment is live yet.
+The existing Vercel project caesars-loot-server was corrected from NestJS/apps/server to
+Vite/repository root, with npm ci, shared-workspace + web build, apps/web/dist and Node 22.x.
+Dashboard success notifications confirmed these settings were saved. Production VITE_API_URL
+and VITE_WS_URL now reference the assigned Railway HTTPS origin and /game namespace;
+Vercel confirmed both variables were added. A corrected frontend redeploy was requested.
 The Railway dashboard reports Config as Code unavailable for newly configured services;
 railway.json must not be relied on for this deployment. Equivalent dashboard settings are required.
 CI quality passed 162 tests (server 47, web 89, math 26), lint, typecheck, format and build.
 E2E run 35156783927 passed 15/16; the two-cycle recovery scenario exceeded its 30-second
 total budget. Its explicit budget is now 60 seconds; the focused local rerun passed in 39.9 seconds.
-A new complete CI/E2E run is still required before production deployment.
+CI run 35161395701 passed on commit 6335c83. Complete E2E run 35161395756 passed 13/16:
+the 20-round scenario exceeded 240 seconds, settings persistence encountered a closed browser
+session, and timeout recovery exceeded 30 seconds. The previously failing expired-session/render
+recovery scenario passed. These failures require further diagnosis; hosted release is not validated.
+Trace screenshot capture is now disabled while DOM/action traces are retained, reducing
+continuous WebGL readback overhead. The CI twenty-round total budget is 480 seconds and timeout
+recovery is 60 seconds; individual transition deadlines and assertions remain unchanged.
+Focused local rerun of all three failing scenarios passed (3/3, 4.5 minutes).
+Lint, typecheck and formatting passed. Complete hosted CI/E2E rerun remains required.
 No production URLs or v1.0.0 release exist yet.
 Milestone 14 local validation: lint, typecheck, format, build, coverage and 157 unit tests passed.
 Six recovery E2E tests passed again after the final dependency correction; production-mode smoke

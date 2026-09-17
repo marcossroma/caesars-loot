@@ -79,6 +79,7 @@ test('missing background uses a visible fallback and still reaches READY', async
 });
 
 test('timeout recovery is explicit and does not duplicate PixiJS or sockets', async ({ page }) => {
+  test.setTimeout(60_000);
   await ready(page);
   await page.getByText('DEV', { exact: true }).click();
   await page.getByRole('button', { name: 'Simulate timeout' }).click();
