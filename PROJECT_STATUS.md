@@ -7,7 +7,9 @@ Last updated: 2026-09-17
 Functional portfolio demo published on Vercel + Railway + dedicated Supabase with verified TLS.
 Frontend: https://caesars-loot-server.vercel.app/.
 Backend health: https://caesars-lootserver-production.up.railway.app/health.
-Quality CI 35235472519 and complete browser CI 35235472555 passed on ad1db5c.
+Final presentation quality CI 35240736062 and complete browser CI 35240736079 passed on
+35c3258. Public settings persistence passed in 38.3 s; the polished six-viewport touch/reload
+smoke passed again without changing tracked screenshots. Repository is clean and synchronized.
 Hosted smoke passed: database health, exact positive/negative CORS, safe validation errors,
 headers, disabled production Swagger, private traps, double start/cashout, history and WSS.
 Responsive browser smoke passed at 360x800, 390x844, 430x932, 844x390, 1366x768 and 1920x1080:
@@ -356,7 +358,6 @@ The smoke-test demo session/history was retained; no user data was deleted.
 
 ## In Progress
 
-- Publish final presentation polish and confirm its CI/platform rollout.
 - Owner-only device/browser, branch protection, video and application checklist actions.
 
 ## Next

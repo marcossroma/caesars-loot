@@ -208,9 +208,9 @@ traces/screenshots are retained as artifacts. See [QA matrix](./docs/qa-matrix.m
 passed lint, typecheck, formatting, build and 162 tests: 47 backend, 89 frontend and 26 game-math.
 The backend count includes five integration tests against disposable PostgreSQL, not the live
 Supabase database. Local runs without `TEST_DATABASE_URL` intentionally skip those five tests.
-[Quality CI](https://github.com/marcossroma/caesars-loot/actions/runs/35235472519) and
-[complete browser CI](https://github.com/marcossroma/caesars-loot/actions/runs/35235472555)
-passed on commit `ad1db5c`. The settings failure trace showed correct persisted values but an
+[Quality CI](https://github.com/marcossroma/caesars-loot/actions/runs/35240736062) and
+[complete browser CI](https://github.com/marcossroma/caesars-loot/actions/runs/35240736079)
+passed on commit `35c3258`. The settings failure trace showed correct persisted values but an
 exhausted total test deadline; redundant initialization was removed and CI budgets adjusted.
 Rendering and recovery run in separate processes, with every assertion retained.
 

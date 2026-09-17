@@ -8,7 +8,7 @@ headers, disabled production Swagger, exact CORS denial, private traps, double s
 and history. Six viewport Chromium smoke retained one canvas and no page errors.
 An active revealed round and credits survived Railway replacement c663fb60 → f94264ac,
 followed by WSS room rejoin and cashout. Fictional smoke sessions are retained; no data deleted.
-Quality CI 35235472519 and complete browser CI 35235472555 passed on ad1db5c.
+Final presentation quality CI 35240736062 and complete browser CI 35240736079 passed on 35c3258.
 Owner-managed branch protection and physical/browser/hardware review remain release gates.
 
 ## Architecture
@@ -25,6 +25,8 @@ Set `VITE_API_URL=https://<railway-domain>` and `VITE_WS_URL=https://<railway-do
 Socket.IO accepts an HTTPS namespace URL and upgrades to WSS. Build validation requires
 secure URLs on Vercel. Never put database credentials or service-role keys in VITE variables.
 Only hashed build assets receive immutable cache; unversioned public assets do not.
+Generated Vite files live directly under /assets; public art stays in category subdirectories.
+The final root-file cache rule avoids a :path* directory matcher, which also matched zero segments.
 Public production source maps are disabled; reproduce locally for debugging.
 
 ## Railway Setup
