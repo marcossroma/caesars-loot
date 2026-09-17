@@ -6,22 +6,18 @@ async function ready(page: Page) {
 }
 
 test('persists mute, volume and reduced effects across reload', async ({ page }) => {
-  test.setTimeout(60_000);
-  await page.goto('/');
-  await page.evaluate(() => localStorage.clear());
-  await page.reload();
-  await expect(page.getByRole('button', { name: 'START HEIST' })).toBeEnabled({ timeout: 15_000 });
-  await page.locator('.hud-settings').evaluate((details: HTMLDetailsElement) => {
-    details.open = true;
-  });
+  // Playwright creates a clean context for each test; an extra reset/reload is redundant.
+  // The CI trace reached the final assertion with only 174 ms of its total budget left.
+  test.setTimeout(process.env['CI'] ? 120_000 : 60_000);
+  await page.setViewportSize({ width: 390, height: 844 });
+  await ready(page);
+  await page.locator('.hud-settings summary').click();
   await page.getByRole('button', { name: 'SOUND ON' }).click();
   await page.getByLabel('Sound volume').fill('35');
   await page.getByRole('button', { name: 'FX FULL' }).click();
   await page.reload();
   await expect(page.getByRole('button', { name: 'START HEIST' })).toBeEnabled({ timeout: 15_000 });
-  await page.locator('.hud-settings').evaluate((details: HTMLDetailsElement) => {
-    details.open = true;
-  });
+  await page.locator('.hud-settings summary').click();
   await expect(page.getByRole('button', { name: 'SOUND OFF' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'FX REDUCED' })).toBeVisible();
   await expect(page.getByLabel('Sound volume')).toHaveValue('35');

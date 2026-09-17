@@ -1,6 +1,6 @@
 # Project Status
 
-Last updated: 2026-09-16
+Last updated: 2026-09-17
 
 ## Current Phase
 
@@ -58,6 +58,11 @@ The workflow now runs mobile and recovery files in separate Chromium invocations
 all tests and distinct failure artifact folders. This isolates renderer resources; a green
 hosted rerun is still required. Wait for CI remains enabled on Railway.
 Public domains are assigned; no v1.0.0 release exists yet.
+CI failure trace confirms settings persisted correctly; the final assertion began with only
+174 ms remaining before the total test deadline closed the browser context. The redundant
+initial reset/reload is removed, actual settings-summary clicks are used, and this scenario
+uses a mobile viewport with a 120-second CI budget. Its focused local rerun passed in 18.5 s.
+Downloaded diagnostic artifacts are excluded from Git, lint and formatting, not test sources.
 Milestone 14 local validation: lint, typecheck, format, build, coverage and 157 unit tests passed.
 Six recovery E2E tests passed again after the final dependency correction; production-mode smoke
 against localhost:3004 with real Supabase passed database health, exact CORS denial, WebSocket
